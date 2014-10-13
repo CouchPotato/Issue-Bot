@@ -7,6 +7,8 @@
 	},
 	"dependencies": {
 		"mary-poppins": ">= 0.3.1",
-		"poppins-pr-checklist": ">= 0.2.2"
+		"poppins-pr-checklist": ">= 0.2.2",
+		"lodash": "~2.4.1",
+		"q":  ">= 1.0.1"
 	}
 }
