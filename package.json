@@ -1,0 +1,12 @@
+{
+	"name": "autoresponder",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node app.js"
+	},
+	"dependencies": {
+		"mary-poppins": ">= 0.3.1",
+		"poppins-pr-checklist": ">= 0.2.2"
+	}
+}
