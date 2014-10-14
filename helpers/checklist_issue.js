@@ -63,7 +63,7 @@ module.exports = function initPlugin(pop){
 
 			// Enable debugging
 			{
-				message: 'Enabled debug logging in Settings > Advanced (restart CP)',
+				message: 'Enabled debug logging in Settings > Advanced (restart CP, be sure to disable after the bug is fixed)',
 				condition: function (data) {
 					var inline_logs = isInlineLog(data.issue.body);
 					if(inline_logs)
@@ -95,8 +95,6 @@ module.exports = function initPlugin(pop){
 	});
 
 	poppins.on('issueOpened', respondeToNewIssue);
-
-	respondeToNewIssue(getTestData());
 };
 
 function isInlineLog(data){
@@ -113,8 +111,6 @@ function respondeToNewIssue(data){
 
 	return issue_checklist.responseBody(data).
 		then(function (body) {
-			console.log(body);
-			return;
 			return poppins.createComment(number, body);
 		});
 }
@@ -139,11 +135,11 @@ function checklist (data) {
 		});
 	})).
 		then(function (lines) {
-			return lines.filter(identity).join('\n');
+			return lines.filter(removeEmpty).join('\n');
 		});
 }
 
-function identity (x) {
+function removeEmpty(x) {
 	return x;
 }
 
@@ -151,6 +147,7 @@ function getTestData(){
 	return {
 		"action": "opened",
 		"issue": {
+			"number": 4,
 			"body": "Since the update it hangs when I click home on 'Loading 'Snatched & Available'." +
 				"Log file pasted below." +
 				"### Steps to reproduce:" +
