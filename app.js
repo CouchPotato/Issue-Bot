@@ -20,7 +20,7 @@ if(config.init.hook.secret){
 	});
 
 	// Check if xhub is set
-	poppins.server.stack.splice(2, 0, {
+	poppins.server.stack.splice(3, 0, {
 		'route': '',
 		'handle': function(req, res, next){
 			if(req.isXHub && req.isXHubValid()){
