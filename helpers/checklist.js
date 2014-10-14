@@ -22,8 +22,6 @@ module.exports = function initPlugin(pop, events){
 
 			return responseBody(data).
 				then(function (body) {
-					console.log(body);
-					return;
 					return poppins.createComment(number, body);
 				});
 		}
