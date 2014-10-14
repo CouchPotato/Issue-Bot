@@ -44,8 +44,6 @@ module.exports = function initPlugin(pop){
 	});
 
 	poppins.on('pullRequestOpened', respondeToPullRequest);
-
-	respondeToPullRequest(getTestData());
 };
 
 
@@ -54,8 +52,6 @@ function respondeToPullRequest(data){
 
 	return responseBody(data).
 		then(function (body) {
-			console.log(body);
-			return;
 			return poppins.createComment(number, body);
 		});
 }
