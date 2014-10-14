@@ -10,10 +10,10 @@ module.exports = function initPlugin(pop){
 
 		responseBody: responseBody,
 
-		greeting: 'Thanks for the issue report! Before a real human comes by, please make sure your report has all the below criteria checked',
-		closing: 'Please make sure you also read [contribution guide](https://github.com/RuudBurger/CouchPotatoServer/blob/develop/contributing.md#issues) and followed all the steps. \n' +
-			'My master will close issues if there isn\'t enough information. On a good day he will tag the issue on close with the reason (like `can\'t reproduce`), but usually he won\'t, the lazy asshat.\n\n' +
-			'Sometimes my master is a grumpy cat and response with short answers. This isn\'t (always) because he hates you, but because he\'s on mobile or busy fixing bugs. If something isn\'t clear, please let him know. Maybe he can teach me his awesome ways.' +
+		before: 'Thanks for the issue report! Before a real human comes by, please make sure your report has all the below criteria checked',
+		after: 'Please make sure you also read [contribution guide](https://github.com/RuudBurger/CouchPotatoServer/blob/develop/contributing.md#issues) and followed all the steps. \n' +
+			'Make the title describe your issue. Having "CP not working" or "I get this bug" for 100 issues, isn\'t really helpful. My master will close issues if there isn\'t enough information. On a good day he will tag the issue on close with the reason (like `can\'t reproduce`), but usually he won\'t, the lazy asshat.\n\n' +
+			'Sometimes my master seems like a grumpy cat and responds with short answers. This isn\'t (always) because he hates you, but because he\'s on mobile or busy fixing bugs. If something isn\'t clear, please let him know. Maybe he can teach me his awesome ways.' +
 			'\n\nThanks!',
 		checks: [
 
@@ -38,27 +38,40 @@ module.exports = function initPlugin(pop){
 			{
 				message: 'Post logs, either inline (for smaller logs) or using [Pastebin](http://pastebin.com/)',
 				condition: function (data) {
-					var inline_logs = 0;
-					_.each(['ERROR [', 'INFO [', 'DEBUG ['], function(check_for){
-						inline_logs += _.contains(data.issue.body, check_for) ? 1 : 0;
-					});
+
+					var inline_logs = isInlineLog(data.issue.body);
 
 					var linked_logs = 0;
 					_.each(['pastebin.com', 'gist.github.com'], function(check_for){
-						linked_logs += _.contains(data.issue.body, check_for) ? 1 : 0;
+						linked_logs += _.contains(data.issue.body.toLowerCase(), check_for) ? 1 : 0;
 					});
 
 					return inline_logs || linked_logs;
 				}
 			},
+
+			// Wrap inline logs inside ```
+			{
+				message: 'Please wrap inline logs inside ``` for readability',
+				condition: function (data) {
+					var inline_logs = isInlineLog(data.issue.body);
+
+					if(inline_logs)
+						return _.contains(data.issue.body, '```');
+				}
+			},
+
 			// Enable debugging
 			{
 				message: 'Enabled debug logging in Settings > Advanced (restart CP)',
 				condition: function (data) {
-					return _.contains(data.issue.body, 'DEBUG [');
+					var inline_logs = isInlineLog(data.issue.body);
+					if(inline_logs)
+						return _.contains(data.issue.body, 'DEBUG [');
 				}
 			},
-			//
+
+			// Version information missing
 			{
 				message: 'Post full version information',
 				condition: function (data) {
@@ -76,12 +89,8 @@ module.exports = function initPlugin(pop){
 					return correct_repo || is_desktop;
 				}
 			}
-		],
 
-		good: 'Thanks for the PR! Looks good.',
-
-		// markdown utils
-		checklist: checklist
+		]
 
 	});
 
@@ -89,6 +98,15 @@ module.exports = function initPlugin(pop){
 
 	respondeToNewIssue(getTestData());
 };
+
+function isInlineLog(data){
+	var inline_logs = 0;
+	_.each(['ERROR [', 'INFO [', 'DEBUG ['], function(check_for){
+		inline_logs += _.contains(data, check_for) ? 1 : 0;
+	});
+
+	return inline_logs > 0;
+}
 
 function respondeToNewIssue(data){
 	var number = data.issue.number;
@@ -102,8 +120,8 @@ function respondeToNewIssue(data){
 }
 
 function responseBody(data){
-	return issue_checklist.checklist(data).then(function (list) {
-		return list ? Q.all([issue_checklist.greeting, list, issue_checklist.closing]) : null
+	return checklist(data).then(function (list) {
+		return list ? Q.all([issue_checklist.before, list, issue_checklist.after]) : null
 	}).
 		then(function (paragraphs) {
 			return paragraphs.join('\n\n');
@@ -116,7 +134,8 @@ var EMPTY = '- [ ] ',
 function checklist (data) {
 	return Q.all(issue_checklist.checks.map(function (check) {
 		return Q(check.condition(data)).then(function (condition) {
-			return (!condition ? EMPTY : NON_EMPTY) + check.message;
+			if(condition !== undefined)
+				return (!condition ? EMPTY : NON_EMPTY) + check.message;
 		});
 	})).
 		then(function (lines) {
