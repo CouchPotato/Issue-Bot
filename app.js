@@ -10,7 +10,7 @@ require('./helpers/checklist_pullrequest')(poppins);
 
 // Force add secret check
 if(config.init.hook.secret)
-	poppins.server.stack.unshift({
+	poppins.server.stack.splice(2, 0, {
 		'route': '',
 		'handle': xhub({ algorithm: 'sha1', secret: config.init.hook.secret })
 	});
