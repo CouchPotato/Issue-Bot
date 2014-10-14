@@ -11,6 +11,7 @@ module.exports.init = {
 
 	hook: {
 		url: 'http://xx:1234',
-		port: 1234
+		port: 1234,
+		secret: null
 	}
 };
