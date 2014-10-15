@@ -1,4 +1,4 @@
-module.exports.init = {
+module.exports = {
 	target: {
 		user: 'user',
 		repo: 'repo'
@@ -9,9 +9,6 @@ module.exports.init = {
 		password: 'x-oauth-basic'
 	},
 
-	hook: {
-		url: 'http://xx:1234',
-		port: 1234,
-		secret: null
-	}
+	port: 1234,
+	secret: null
 };
