@@ -62,7 +62,7 @@ app.post('/', function(req, res, next){
 
 app.get('/', function(req, res, next){
 	res.status(401).send('Your shoe\'s untied');
-})
+});
 
 // Start server
 httpServer = server.listen(app.get('port'), function() {
@@ -70,7 +70,7 @@ httpServer = server.listen(app.get('port'), function() {
 });
 
 // Load helpers
-//require('./helpers/checklist')(poppins, {
-//	'issueOpened': require('./configs/issue'),
-//	'pullRequestOpened': require('./configs/pullrequest')
-//});
+require('./helpers/checklist')({
+	'issue_opened': require('./configs/issue'),
+	'pull_request_opened': require('./configs/pullrequest')
+});
