@@ -20,7 +20,7 @@ module.exports = {
 		{
 			message: 'Make sure you send a PR against the DEVELOP branch',
 			condition: function (data) {
-				return data.pull_request.head.ref == 'develop';
+				return data.pull_request.base.ref == 'develop';
 			}
 		},
 
