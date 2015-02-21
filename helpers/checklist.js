@@ -1,10 +1,7 @@
 var _ = require('lodash'),
 	Q = require('q');
 
-var poppins;
-
-module.exports = function initPlugin(pop, events){
-	poppins = pop;
+module.exports = function initPlugin(events){
 
 	// Loop over all events
 	_.each(events, function(options, event_name){
@@ -53,7 +50,7 @@ module.exports = function initPlugin(pop, events){
 		}
 
 		// Add it to poppins
-		poppins.on(event_name, respondeTo);
+		pubsub.on(event_name, respondeTo);
 
 		// Tests
 		// try{ respondeTo(getTestData()); }
