@@ -7,7 +7,7 @@ var express = require('express'),
 
 	xhub = require('express-x-hub'),
 
-	config = require('./config'),
+	config = require(__dirname + '/config'),
 
     redis = require('redis'),
 
@@ -24,7 +24,7 @@ global.pubsub = new EventEmitter();
 
 // Development only
 if(app.get('env') != 'development') {
-	winston.add(winston.transports.File, { filename: './logs/main.log' });
+	winston.add(winston.transports.File, { filename: __dirname + '/logs/main.log'});
 	winston.remove(winston.transports.Console);
 }
 
@@ -71,6 +71,6 @@ httpServer = server.listen(app.get('port'), function() {
 
 // Load helpers
 require('./helpers/checklist')({
-	'issue_opened': require('./configs/issue'),
-	'pull_request_opened': require('./configs/pullrequest')
+	'issue_opened': require(__dirname + '/configs/issue'),
+	'pull_request_opened': require(__dirname + '/configs/pullrequest')
 });
