@@ -3,7 +3,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
 
 	// HTTP server
-	http = require('http')
+	http = require('http'),
 
 	xhub = require('express-x-hub'),
 
@@ -15,7 +15,7 @@ var express = require('express'),
 	winston = require('winston'),
 
 	app = express(),
-	server = http.createServer(app)
+	server = http.createServer(app),
 
 	EventEmitter = require('events').EventEmitter;
 
