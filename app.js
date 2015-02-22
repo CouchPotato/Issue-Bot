@@ -81,6 +81,6 @@ httpServer = server.listen(app.get('port'), function() {
 
 // Load helpers
 require('./helpers/checklist')({
-	'issue_opened': require(__dirname + '/configs/issue'),
+	'issues_opened': require(__dirname + '/configs/issue'),
 	'pull_request_opened': require(__dirname + '/configs/pullrequest')
 });
