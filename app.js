@@ -7,20 +7,30 @@ var express = require('express'),
 
 	xhub = require('express-x-hub'),
 
-	config = require(__dirname + '/config'),
-
     redis = require('redis'),
-
-	// Logging
-	winston = require('winston'),
 
 	app = express(),
 	server = http.createServer(app),
 
+	GitHubApi = require("github"),
 	EventEmitter = require('events').EventEmitter;
 
+global.winston = require('winston');
+global.config = config = require(__dirname + '/config');
 global.pubsub = new EventEmitter();
-
+global.github = new GitHubApi({
+	// required
+	version: '3.0.0',
+	// optional
+	timeout: 5000,
+	headers: {
+		"user-agent": 'CouchPotatoBot'
+	}
+});
+github.authenticate({
+	type: 'token',
+	token: config.token
+});
 
 // Development only
 if(app.get('env') != 'development') {

@@ -3,12 +3,7 @@ module.exports = {
 		user: 'user',
 		repo: 'repo'
 	},
-
-	login: {
-		username: '',
-		password: 'x-oauth-basic'
-	},
-
+	token: '',
 	port: 1234,
 	secret: null
 };
