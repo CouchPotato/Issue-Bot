@@ -82,7 +82,7 @@ function getTestData(){
 				"Movie(s) I have this with: ..." +
 				"Quality of the movie being searched: ..." +
 				"Providers I use: ..." +
-				"Version of CouchPotato: git:(RuudBurger:CouchPotatoServer master) b773f7b7 (2014-10-07 23:09:44)" +
+				"Version of CouchPotato: git:(CouchPotato:CouchPotatoServer master) b773f7b7 (2014-10-07 23:09:44)" +
 				"Running on: ..." +
 				"### Logs:" +
 				"```" +

@@ -4,7 +4,7 @@ module.exports = {
 		return data.pull_request.number;
 	},
 	before: 'Thanks for the pull request! Before a real human comes by, please make sure your report has all the below criteria checked',
-	after: 'Please make sure you also read [contribution guide](https://github.com/RuudBurger/CouchPotatoServer/blob/develop/contributing.md#pull-requests) and followed all the steps.' +
+	after: 'Please make sure you also read [contribution guide](https://github.com/CouchPotato/CouchPotatoServer/blob/develop/contributing.md#pull-requests) and followed all the steps.' +
 		'\n\nThanks!',
 	checks: [
 
