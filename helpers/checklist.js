@@ -19,7 +19,14 @@ module.exports = function initPlugin(events){
 
 			return responseBody(data).
 				then(function (body) {
-					return poppins.createComment(number, body);
+					github.issues.createComment({
+						'user': config.target.user,
+						'repo': config.target.repo,
+						'number': number,
+						'body': body
+					}, function(err, result){
+						winston.info(result);
+					});
 				});
 		}
 

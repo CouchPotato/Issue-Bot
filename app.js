@@ -3,28 +3,38 @@ var express = require('express'),
     bodyParser = require('body-parser'),
 
 	// HTTP server
-	http = require('http')
+	http = require('http'),
 
 	xhub = require('express-x-hub'),
 
-	config = require('./config'),
-
     redis = require('redis'),
 
-	// Logging
-	winston = require('winston'),
-
 	app = express(),
-	server = http.createServer(app)
+	server = http.createServer(app),
 
+	GitHubApi = require("github"),
 	EventEmitter = require('events').EventEmitter;
 
+global.winston = require('winston');
+global.config = config = require(__dirname + '/config');
 global.pubsub = new EventEmitter();
-
+global.github = new GitHubApi({
+	// required
+	version: '3.0.0',
+	// optional
+	timeout: 5000,
+	headers: {
+		"user-agent": 'CouchPotatoBot'
+	}
+});
+github.authenticate({
+	type: 'token',
+	token: config.token
+});
 
 // Development only
 if(app.get('env') != 'development') {
-	winston.add(winston.transports.File, { filename: './logs/main.log' });
+	winston.add(winston.transports.File, { filename: __dirname + '/logs/main.log'});
 	winston.remove(winston.transports.Console);
 }
 
@@ -71,6 +81,6 @@ httpServer = server.listen(app.get('port'), function() {
 
 // Load helpers
 require('./helpers/checklist')({
-	'issue_opened': require('./configs/issue'),
-	'pull_request_opened': require('./configs/pullrequest')
+	'issue_opened': require(__dirname + '/configs/issue'),
+	'pull_request_opened': require(__dirname + '/configs/pullrequest')
 });
