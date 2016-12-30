@@ -5,7 +5,7 @@ module.exports = {
 		return data.issue.number;
 	},
 	before: 'Thanks for the issue report! Before a real human comes by, please make sure your report has all the below criteria checked',
-	after: 'Please make sure you also read [contribution guide](https://github.com/CouchPotato/CouchPotatoServer/blob/develop/contributing.md#issues) and followed all the steps. \n' +
+	after: 'Please make sure you also read [contribution guide](https://github.com/CouchPotato/CouchPotatoServer/blob/develop/.github/contributing.md#issues) and followed all the steps. \n' +
 		'Make the title describe your issue. Having "CP not working" or "I get this bug" for 100 issues, isn\'t really helpful. My master will close issues if there isn\'t enough information. On a good day he will tag the issue on close with the reason (like `can\'t reproduce`), but usually he won\'t, the lazy asshat.\n\n' +
 		'Sometimes my master seems like a grumpy cat and responds with short answers. This isn\'t (always) because he hates you, but because he\'s on mobile or busy fixing bugs. If something isn\'t clear, please let him know. Maybe he can teach me his awesome ways.' +
 		'\n\nThanks!',
@@ -77,7 +77,7 @@ module.exports = {
 				// Make sure logs are from correct repo
 				if(has_version){
 					is_desktop = _.contains(data.issue.body, 'desktop:');
-					correct_repo = _.contains(data.issue.body, 'RuudBurger:CouchPotatoServer');
+					correct_repo = _.contains(data.issue.body, 'CouchPotato:CouchPotatoServer');
 				}
 
 				return correct_repo || is_desktop;
